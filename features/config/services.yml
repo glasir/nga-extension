@@ -1,0 +1,7 @@
+services:
+    nogoblinsallowed.features.listener:
+        class: nogoblinsallowed\features\event\main_listener
+        arguments:
+            - '@language'
+        tags:
+            - { name: event.listener }
