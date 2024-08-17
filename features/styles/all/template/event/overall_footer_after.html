@@ -1,0 +1,17 @@
+<!-- NGA Scripts -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.14.0/jquery-ui.min.js"></script>
+{% INCLUDEJS '@nogoblinsallowed_features/autocard.js' %}
+{% INCLUDEJS '@nogoblinsallowed_features/decks.js' %}
+{% INCLUDEJS '@nogoblinsallowed_features/tables.js' %}
+<script>
+	$(document).ready(function() {
+		makeTables();
+		createAutocards();
+	});
+
+	// function playSound(obj) { 
+	// 	var sound = $(obj).attr('sound'),
+	// 		audioHtml = '<audio autoplay autobuffer src="//forum.nogoblinsallowed.com/audio/' + sound + '.mp3"></audio>';
+	// 	$(audioHtml).insertAfter($(obj));
+	// }
+</script>

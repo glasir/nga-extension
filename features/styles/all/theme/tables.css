@@ -1,0 +1,34 @@
+.goblintable {
+    border: 1px solid black;
+    color: black;
+    border-collapse: collapse;
+}
+
+.goblintable.plain {
+    border:none;
+}
+
+.goblintable.plain .row1,.goblintable.plain .row3 {
+    background-color:transparent;
+}
+
+
+.full-width {
+    max-width: 100% !important;
+}
+
+.goblintable span.sort_header {
+    text-decoration: underline;
+}
+
+.goblintable span.sort_header:hover {
+    cursor: pointer;
+}
+
+.goblintable span.sort_header.sort_asc:after {
+    content: " \2191";
+}
+
+.goblintable span.sort_header.sort_desc:after {
+    content: " \2193";
+}

@@ -23,49 +23,33 @@ class main_listener implements EventSubscriberInterface
 	public static function getSubscribedEvents()
 	{
 		return [
-			'core.user_setup'							=> 'load_language_on_setup',
-	'core.display_forums_modify_template_vars'	=> 'display_forums_modify_template_vars',
+			'core.text_formatter_s9e_configure_after' => 'configure_bbcodes',
 		];
 	}
 
-	/* @var \phpbb\language\language */
-	protected $language;
-
-	/**
-	 * Constructor
-	 *
-	 * @param \phpbb\language\language	$language	Language object
-	 */
-	public function __construct(\phpbb\language\language $language)
+	public function configure_bbcodes($event)
 	{
-		$this->language = $language;
+		$configurator = $event['configurator'];
+
+		// Set up autocard bbcodes.
+		$this->configure_autocard($configurator, 'c');
+		$this->configure_autocard($configurator, 'card');
 	}
 
-	/**
-	 * Load common language files during user setup
-	 *
-	 * @param \phpbb\event\data	$event	Event object
-	 */
-	public function load_language_on_setup($event)
+	private function configure_autocard($configurator, $tag)
 	{
-		$lang_set_ext = $event['lang_set_ext'];
-		$lang_set_ext[] = [
-			'ext_name' => 'nogoblinsallowed/features',
-			'lang_set' => 'common',
-		];
-		$event['lang_set_ext'] = $lang_set_ext;
-	}
+		unset($configurator->BBCodes[$tag]);
+		unset($configurator->tags[$tag]);
 
-	/**
-	 * A sample PHP event
-	 * Modifies the names of the forums on index
-	 *
-	 * @param \phpbb\event\data	$event	Event object
-	 */
-	public function display_forums_modify_template_vars($event)
-	{
-		$forum_row = $event['forum_row'];
-		$forum_row['FORUM_NAME'] .= $this->language->lang('FEATURES_EVENT');
-		$event['forum_row'] = $forum_row;
+		$configurator->BBCodes->addCustom(
+			"[$tag name={TEXT;useContent;postFilter=rawurlencode}]{TEXT}[/$tag]",
+			'<a
+				class="autocard"
+				href="https://scryfall.com/search?q=!%22{@name}%22"
+				img-url="https://gatherer.wizards.com/Handlers/Image.ashx?type=card&name={@name}"
+			>	
+				<xsl:apply-templates/>
+			</a>'
+		);
 	}
 }
