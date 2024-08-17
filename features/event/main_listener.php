@@ -32,11 +32,14 @@ class main_listener implements EventSubscriberInterface
 		$configurator = $event['configurator'];
 
 		// Set up autocard bbcodes.
-		$this->configure_autocard($configurator, 'c');
-		$this->configure_autocard($configurator, 'card');
+		$this->add_autocard_bbcode($configurator, 'c');
+		$this->add_autocard_bbcode($configurator, 'card');
+
+		// Set up the table bbcode.
+		$this->add_table_bbcode($configurator);
 	}
 
-	private function configure_autocard($configurator, $tag)
+	private function add_autocard_bbcode($configurator, $tag)
 	{
 		unset($configurator->BBCodes[$tag]);
 		unset($configurator->tags[$tag]);
@@ -50,6 +53,17 @@ class main_listener implements EventSubscriberInterface
 			>	
 				<xsl:apply-templates/>
 			</a>'
+		);
+	}
+
+	private function add_table_bbcode($configurator)
+	{
+		unset($configurator->BBCodes['table']);
+		unset($configurator->tags['table']);
+
+		$configurator->BBCodes->addCustom(
+			'[table={SIMPLETEXT}]{TEXT}[/table]',
+			'<span class="table" options="{SIMPLETEXT}">{TEXT}</span>'
 		);
 	}
 }
